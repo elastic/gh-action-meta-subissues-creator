@@ -1,0 +1,11 @@
+{
+  "name": "meta-subissues-creator",
+  "version": "1.0.0",
+  "main": "index.js",
+  "keywords": [],
+  "license": "Apache Licence v2.0",
+  "dependencies": {
+    "@actions/core": "1.6.0",
+    "@actions/github": "5.0.1"
+  }
+}

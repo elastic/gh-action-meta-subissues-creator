@@ -1,0 +1,28 @@
+name: meta-subissues-creator
+description: |
+  Creates sub issues for a meta-issue.
+inputs:
+  metaIssue:
+    description: |
+      The meta issue to create sub issues for.
+    required: true
+  token:
+    description: |
+      Token to use for issue creation.
+    required: true
+  labelsToExclude:
+    description: |
+      The labels to exclude for sub issues.
+    required: true
+  specLabel:
+    description: |
+      The label to use for spec issues.
+    required: true
+  bodyRegex:
+    description: |
+      The regex to use for extracting issue creation list in meta issue body.
+    required: true
+
+runs:
+  using: node16
+  main: index.js
