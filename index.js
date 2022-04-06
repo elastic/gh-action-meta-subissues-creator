@@ -101,7 +101,7 @@ const run = async () => {
     var specIssueNumber = undefined;
     if(repos.some(r => r.toLowerCase().startsWith('spec'))){
       repos = repos.filter(r => !(r.toLowerCase().startsWith('spec')));
-      const specIssueBody = `See meta issue for the description:\r\n- [ ] ${metaIssue.html_url}`
+      const specIssueBody = `See meta issue for the description:\r\n- ${metaIssue.html_url}`
       const specResponse = await createIssue(metaIssueRepo, `[META ${metaIssue.number}] Spec: ${metaIssue.title}`, specIssueBody, [...labelsForSubIssues, ...specLabels]);
       specIssueNumber = specResponse.data.number;
     }
