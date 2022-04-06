@@ -1,6 +1,6 @@
 {
   "name": "meta-subissues-creator",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "index.js",
   "keywords": [],
   "license": "Apache Licence v2.0",
