@@ -32,13 +32,14 @@ function default_parse(input_name) {
 
 const metaIssue = parse_object("metaIssue");
 const labelsToExclude = parse_array("labelsToExclude");
-const specLabel = default_parse("specLabel");
+const specLabels = parse_array("specLabels");
 const token = default_parse("token");
 const bodyRegex = new RegExp(default_parse('bodyRegex'),'ms');
 const metaIssueRepo = metaIssue.repository_url.match(/https.*\/repos\/[^\/]*\/(.*)/)[1];
 const metaIssueLabels = metaIssue.labels.map(l => l.name);
 const owner = metaIssue.repository_url.match(/https.*\/repos\/([^\/]*)\/.*/)[1];
 const extractReposRegex = /- \[.\] ([^\r]*)/ms;
+const milestoneBadgeTemplate = '<img alt="Milestone" src="https://img.shields.io/badge/dynamic/json?label=milestone&query=milestone.title&url=https://api.github.com/repos/[ISSUE_PATH]" align="top">';
 
 const requestWithAuth = request.defaults({
   headers: {
@@ -65,13 +66,13 @@ const updateMetaIssue = async (agentIssues, specIssue, oldBody) => {
   var overviewSection = "";
   if (specIssue) {
     overviewSection = overviewSection + "## Spec Issue\r\n";
-    overviewSection = overviewSection + `- [ ] https://github.com/${specIssue}\r\n`;
+    overviewSection = overviewSection + `- [ ] https://github.com/${specIssue} ${milestoneBadgeTemplate.replace('[ISSUE_PATH]', specIssue)}\r\n`;
     overviewSection = overviewSection + "\r\n";
   }
   if(agentIssues.length > 0){
     overviewSection = overviewSection + "## Agent Issues\r\n";
     for (const aIssue of agentIssues) {
-      overviewSection = overviewSection + `- [ ] https://github.com/${aIssue}\r\n`;
+      overviewSection = overviewSection + `- [ ] https://github.com/${aIssue} ${milestoneBadgeTemplate.replace('[ISSUE_PATH]', aIssue)}\r\n`;
     }
   }
 
@@ -101,7 +102,7 @@ const run = async () => {
     if(repos.some(r => r.toLowerCase().startsWith('spec'))){
       repos = repos.filter(r => !(r.toLowerCase().startsWith('spec')));
       const specIssueBody = `See meta issue for the description:\r\n- [ ] ${metaIssue.html_url}`
-      const specResponse = await createIssue(metaIssueRepo, `[META ${metaIssue.number}] Spec: ${metaIssue.title}`, specIssueBody, [...labelsForSubIssues, specLabel]);
+      const specResponse = await createIssue(metaIssueRepo, `[META ${metaIssue.number}] Spec: ${metaIssue.title}`, specIssueBody, [...labelsForSubIssues, ...specLabels]);
       specIssueNumber = specResponse.data.number;
     }
 
