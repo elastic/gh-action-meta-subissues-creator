@@ -109,7 +109,7 @@ const run = async () => {
     const subIssueBody = `See meta issue${specIssueNumber ? ' and spec ' : ' '}for the description and details:\r\n- Meta issue: ${metaIssue.html_url}\r\n`
           + (specIssueNumber ? `- Spec issue: https://github.com/${owner}/${metaIssueRepo}/issues/${specIssueNumber}\r\n` : '');
     for (const repo of repos) {
-      const response = await createIssue(repo, `[META ${metaIssue.number}] ${metaIssue.title}`, subIssueBody, labelsForSubIssues);
+      const response = await createIssue(repo, `[META ${metaIssue.number}] ${metaIssue.title}`, subIssueBody, [...labelsForSubIssues]);
       if(response.status < 400){
         createdIssues.push(`${owner}/${repo}/issues/${response.data.number}`);
       }
